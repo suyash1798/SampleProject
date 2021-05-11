@@ -6,7 +6,7 @@ const HttpStatus = require("http-status-codes");
 const validator = require("express-joi-validation").createValidator({});
 const { newUserSchema, loginUserSchema } = require("../validations/user");
 const jwt = require("jsonwebtoken");
-const { omit } = require('lodash')
+const { omit } = require("lodash");
 
 /* GET users listing. */
 router.post(
@@ -46,15 +46,15 @@ router.post(
         .status(HttpStatus.StatusCodes.UNAUTHORIZED)
         .json({ message: "Email/Password not valid" });
     }
-    delete user.hashedPassword;
-    console.log(user.hashedPassword)
+    delete user._doc.hashedPassword;
+    user = user._doc;
     const token = jwt.sign({ data: user }, "10000", {
       expiresIn: "5h",
     });
     res.cookie("auth", token);
     return res
       .status(HttpStatus.StatusCodes.OK)
-      .json({ message: "Login successful",token });
+      .json({ message: "Login successful", token, user });
   }
 );
 
