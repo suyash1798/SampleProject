@@ -1,12 +1,17 @@
 import { Button, Card, Grid, InputLabel, TextField } from "@material-ui/core";
 import axios from "axios";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { useHistory } from "react-router";
+import { addLocalStorageToken } from "../../shared/auth";
+import { AuthContext } from "../../store/auth";
 import "./login.css";
 
 function Login() {
   
     const emailRef = useRef();
     const passwordRef = useRef();
+    const authCtx = useContext(AuthContext)
+    const history = useHistory();
     
     const onLogin = async (event)=>{
         event.preventDefault();
@@ -15,7 +20,11 @@ function Login() {
         
         const data = {email:email, password:password};
         
-        await axios.post('http://localhost:3000/auth/login',data)
+        const res = await axios.post('auth/login',data)
+        console.log(res)
+        addLocalStorageToken(res.data.token);
+        authCtx.setUserDetails(res.data.user);
+        history.push('post-list')
     }
     
     return (

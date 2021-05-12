@@ -16,7 +16,7 @@ mongoose.connect(
 app.use(cors())
 
 app.use("/auth", userRoutes);
-app.use("/post", verifyToken, postRoutes);
+app.use("/post",verifyToken, postRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

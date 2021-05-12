@@ -1,0 +1,13 @@
+.main-container{
+    height: 100%;
+    padding-top: 15px;
+}
+
+.posts-grid{
+    height: 100%;
+}
+
+.post-item{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

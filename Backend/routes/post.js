@@ -18,8 +18,8 @@ router.post(
   validator.body(newPostSchema),
   async (req, res, next) => {
     const newPost = req.body;
-    post = await Post.create({ ...newPost, user: req.user._id });
-    console.log(req.user);
+    post = await Post.create({ ...newPost, user: '609968c9047820646ba926e0' });
+    // console.log(req.user);
     res.send(post);
   }
 );

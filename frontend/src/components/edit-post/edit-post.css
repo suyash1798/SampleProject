@@ -1,0 +1,20 @@
+.post-form{
+    width: 53%;
+    height: 400px;
+}
+
+.post-card{
+    width: 100% !important;
+    padding: 17px;
+}
+
+.post-fields{
+    margin-bottom: 32px;
+    width: 100%;
+    height: ;
+}
+
+.main-dialog{
+    width: 500px;
+    height: 289px;
+}

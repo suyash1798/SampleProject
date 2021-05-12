@@ -4,8 +4,9 @@
 }
 
 .navbar-grid{
-    height: 10%;
+    height: 15%;
     border-bottom: 1px solid;
+    width:100% !important;
 }
 
 .main-grid{
@@ -16,5 +17,5 @@
     padding-top: 50px;
     width: 100%;
     background-color: lightgrey;
-    height: 90%;
+    height: 85%;
 }

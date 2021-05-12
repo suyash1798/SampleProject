@@ -19,7 +19,7 @@ function Signup() {
       
       const data = {email,password,username};
       console.log(data);
-      await axios.post('http://localhost:3000/auth/signup',data)
+      await axios.post('auth/signup',data)
         event.preventDefault();
   }
     
