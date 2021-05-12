@@ -22,7 +22,9 @@ app.use("/post",verifyToken, postRoutes);
 console.log(path.join(__dirname,'../frontend/build'))
 if(process.env.NODE_ENV === 'production'){
   app.use(express.static(path.join(__dirname,'frontend/build')))
+  console.log(express.static(path.join(__dirname,'frontend/build','index.html')))
   app.get('*',function(req,res){
+    console.log(express.static(path.join(__dirname,'frontend/build','index.html')))
     res.send(express.static(path.join(__dirname,'frontend/build','index.html')))
   } )
 }
