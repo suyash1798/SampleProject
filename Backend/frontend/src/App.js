@@ -10,7 +10,7 @@ import { getLocalStorageToken } from "./shared/auth";
 import { AuthContext } from "./store/auth";
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:3000/";
+  axios.defaults.baseURL = "https://suyash-twinbit-assignment.herokuapp.com";
   
   // useLayoutEffect(()=>{
     
