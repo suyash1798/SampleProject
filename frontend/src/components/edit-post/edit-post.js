@@ -3,43 +3,64 @@ import { useState } from "react";
 import { Button, Grid, InputLabel, TextField } from "@material-ui/core";
 import axios from "axios";
 import "./edit-post.css";
-import { getLocalStorageToken } from "../../shared/auth";
+import { getLocalStorageToken } from "../../shared/utils";
 
 function EditPost({ isOpen, toggleDialog, post }) {
   let [title, setTitle] = useState(post.title);
   let [description, setDescription] = useState(post.description);
   console.log(title);
+  const [errors, setError] = useState({});
 
-  //    useEffect(()=>{
-  //     titleRef.current = {value:post.title};
-  //     desRef.current = {value:post.title};
-  //     console.log(titleRef);
-  //    },[post])
-
-  const handleTitle = (event) => {
-    if (event.target.name === "title") {
-      setTitle(event.target.value);
-    } else {
-      setDescription(event.target.value);
+  const onSave = async (event) => {
+    if (!errors["title"] && !errors["description"]) {
+      const data = { title, description };
+      if (post._id) {
+        await axios.put(`/post/update-post/${post._id}`, data);
+      } else {
+        console.log("going to post");
+        await axios.post(`/post/add-post/`, data, {
+          headers: { authorization: `Bearer ${getLocalStorageToken()}` },
+        });
+      }
+      console.log('called')
+      toggleDialog();
     }
   };
 
-  const onSave = async () => {
-    const data = { title, description };
-    if (post._id) {
-      await axios.put(`/post/update-post/${post._id}`, data);
+  const validations = (input, value) => {
+    if (input === "title") {
+      setTitle(value);
     } else {
-      console.log("going to post");
-      await axios.post(`/post/add-post/`, data, {
-        headers: { authorization: `Bearer ${getLocalStorageToken()}` },
-      });
+      setDescription(value);
     }
+    console.log(input, value);
+    if (input === "title") {
+      if (value.length < 5) {
+        setError((error) => ({ ...error, title: "Enter a valid Title" }));
+      } else {
+        setError((error) => ({ ...error, title: null }));
+      }
+    }
+    if (input === "description") {
+      if (value.length < 5) {
+        setError((error) => ({
+          ...error,
+          description: "Enter a valid Description",
+        }));
+      } else {
+        setError((error) => ({ ...error, description: null }));
+      }
+    }
+  };
+
+  const onHandleChange = (event) => {
+    validations(event.target.name, event.target.value);
   };
 
   return (
     <Dialog
       open={isOpen}
-      onClose={() => toggleDialog(false)}
+      onClose={() => toggleDialog}
       aria-labelledby="form-dialog-title"
     >
       <DialogContent className="main-dialog">
@@ -61,7 +82,11 @@ function EditPost({ isOpen, toggleDialog, post }) {
                     placeholder="Title"
                     variant="outlined"
                     value={title}
-                    onChange={handleTitle}
+                    {...(errors["title"] && {
+                      helperText: errors["title"],
+                      error: true,
+                    })}
+                    onChange={onHandleChange}
                     className="post-fields"
                   />
                 </Grid>
@@ -78,12 +103,16 @@ function EditPost({ isOpen, toggleDialog, post }) {
                 <Grid item>
                   <TextField
                     id="outlined-basic"
-                    label="description"
+                    name="description"
                     variant="outlined"
                     type="text"
                     multiline
                     value={description}
-                    onChange={handleTitle}
+                    {...(errors["description"] && {
+                      helperText: errors["description"],
+                      error: true,
+                    })}
+                    onChange={onHandleChange}
                     className="post-fields"
                   />
                 </Grid>

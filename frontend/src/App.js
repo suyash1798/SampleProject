@@ -4,12 +4,12 @@ import Navbar from "./components/navbar/navbar";
 import React, { useState } from "react";
 import Auth from "./pages/auth/auth";
 import PostList from "./pages/post-list/post-list";
-import { getLocalStorageToken } from "./shared/auth";
+import { getLocalStorageToken } from "./shared/utils";
 import { AuthContextProvider } from "./store/auth";
 import { Router } from "@reach/router";
 
 function App() {
-  axios.defaults.baseURL = "https://suyash-twinbit-assignment.herokuapp.com";
+  axios.defaults.baseURL = "http://localhost:3000";
 
   const [redirect, setRedirect] = useState("/enter");
   const [loggedIn, setLoggedIn] = useState(false);

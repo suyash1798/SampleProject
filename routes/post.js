@@ -9,8 +9,6 @@ const {
   paramValidation,
   updatePostValidation,
 } = require("../validations/post");
-const jwt = require("jsonwebtoken");
-const { omit } = require("lodash");
 
 /* GET users listing. */
 router.post(
@@ -18,7 +16,7 @@ router.post(
   validator.body(newPostSchema),
   async (req, res, next) => {
     const newPost = req.body;
-    post = await Post.create({ ...newPost, user: '609968c9047820646ba926e0' });
+    post = await Post.create({ ...newPost, user: req.user._id });
     // console.log(req.user);
     res.send(post);
   }
@@ -38,8 +36,8 @@ router.put(
 );
 
 router.get("/all-post", async (req, res, next) => {
-  console.log(req.user._id)
-  const posts = await Post.find({user:req.user._id});
+  console.log(req.user._id);
+  const posts = await Post.find({ user: req.user._id });
   res.send(posts);
 });
 

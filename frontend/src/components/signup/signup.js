@@ -2,27 +2,60 @@ import { Button, Card, Grid, InputLabel, TextField } from "@material-ui/core";
 // import { createRef } from "react";
 import "./signup.css";
 import axios from "axios";
-import { useRef } from "react";
+import { useState } from "react";
+import { emailRegex } from "../../shared/utils";
 
 function Signup() {
-  
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
-    const usernameRef = useRef(null);
-    
+  const [errors, setError] = useState({});
+  const [data, setData] = useState({});
+
   const onSignup = async (event) => {
     //   event.preventDefault();
-      console.log(emailRef,passwordRef,usernameRef);
-      const email = emailRef.current.value;
-      const password = passwordRef.current.value;
-      const username = usernameRef.current.value;
-      
-      const data = {email,password,username};
+    let error = false;
+    for (let key in errors) {
+      console.log(errors[key])
+      if (errors[key]) error = true;
+    }
+    console.log(error)
+    if (!error) {
       console.log(data);
-      await axios.post('auth/signup',data)
-        event.preventDefault();
-  }
-    
+      await axios.post("auth/signup", data);
+    }
+    event.preventDefault();
+  };
+
+  const validations = (input, value) => {
+    setData((data) => {
+      data[input] = value;
+      return data;
+    });
+    if (input === "username") {
+      if (value.length < 5) {
+        setError((error) => ({ ...error, username: "Enter a valid username" }));
+      } else {
+        setError((error) => ({ ...error, username: null }));
+      }
+    }
+    if (input === "email") {
+      if (!emailRegex.test(value)) {
+        setError((error) => ({ ...error, email: "Enter a valid Email" }));
+      } else {
+        setError((error) => ({ ...error, email: null }));
+      }
+    }
+    if (input === "password") {
+      if (value.length < 5) {
+        setError((error) => ({ ...error, password: "Enter a valid Email" }));
+      } else {
+        setError((error) => ({ ...error, password: null }));
+      }
+    }
+  };
+
+  const onHandleChange = (event) => {
+    validations(event.target.name, event.target.value);
+  };
+
   return (
     <Card variant="outlined" className="signup-card">
       <Grid container direction="column">
@@ -37,7 +70,12 @@ function Signup() {
               <InputLabel>Username:</InputLabel>
               <TextField
                 variant="outlined"
-                inputRef={usernameRef}
+                name="username"
+                {...(errors["username"] && {
+                  helperText: errors["username"],
+                  error: true,
+                })}
+                onChange={onHandleChange}
               />
             </Grid>
             <Grid
@@ -47,7 +85,15 @@ function Signup() {
               className="signup-fields"
             >
               <InputLabel>Email:</InputLabel>
-              <TextField label="email" variant="outlined"  inputRef={emailRef}/>
+              <TextField
+                name="email"
+                variant="outlined"
+                {...(errors["email"] && {
+                  helperText: errors["email"],
+                  error: true,
+                })}
+                onChange={onHandleChange}
+              />
             </Grid>
             <Grid
               container
@@ -59,13 +105,17 @@ function Signup() {
               <TextField
                 id="outlined-basic"
                 type="password"
-                label="password"
+                name="password"
                 variant="outlined"
-                inputRef={passwordRef}
+                {...(errors["password"] && {
+                  helperText: errors["password"],
+                  error: true,
+                })}
+                onChange={onHandleChange}
               />
             </Grid>
             <Button variant="contained" className="signup-fields" type="submit">
-              Login
+              Signup
             </Button>
           </Grid>
         </form>

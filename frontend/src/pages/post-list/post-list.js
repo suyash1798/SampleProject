@@ -14,12 +14,12 @@ function PostList({loggedIn}) {
   const authCtx = useContext(AuthContext);
 
   
-  
+  const getAllPosts = async () => {
+    const response = await axios.get("/post/all-post");
+    setPosts(response.data);
+  };
   useEffect(() => {
-    const getAllPosts = async () => {
-      const response = await axios.get("/post/all-post");
-      setPosts(response.data);
-    };
+    
     getAllPosts();
   }, []);
   
@@ -33,7 +33,9 @@ function PostList({loggedIn}) {
   const [openDialog,setOpenDialog] = useState(false)
   console.log(openDialog)
   function toggleDialog(status){
-      setOpenDialog(status)
+    console.log('hi ther')
+      getAllPosts()
+      setOpenDialog(!openDialog)
   }
   if(!authCtx.user) {
     return (<Redirect to='/enter'noThrow />) 
@@ -47,7 +49,7 @@ function PostList({loggedIn}) {
           <Grid item>
             <Grid container direction="row" justify="flex-end">
               <Grid item>
-                <Button variant="contained" color="primary" onClick={()=>toggleDialog(true)}>
+                <Button variant="contained" color="primary" onClick={()=>toggleDialog()}>
                   Add Post
                 </Button>
               </Grid>
@@ -71,7 +73,7 @@ function PostList({loggedIn}) {
           </Grid>
         </Grid>
       </Container>
-      <EditPost isOpen={openDialog} toggleDialog={toggleDialog} post={{title:'',description:''}}/>
+      <EditPost isOpen={openDialog} toggleDialog={()=>toggleDialog} post={{title:'',description:''}}/>
     </Fragment>
   );
 }

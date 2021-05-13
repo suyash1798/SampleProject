@@ -1,6 +1,6 @@
 import { Button, Grid } from "@material-ui/core";
 import { useContext } from "react";
-import { removeLocalStorageToken } from "../../shared/auth";
+import { removeLocalStorageToken } from "../../shared/utils";
 import { AuthContext } from "../../store/auth";
 import { navigate } from "@reach/router"
 

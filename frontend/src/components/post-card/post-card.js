@@ -1,7 +1,7 @@
 import { Button, Card, Grid } from "@material-ui/core";
 import axios from "axios";
 import { Fragment, useState} from "react";
-import { getLocalStorageToken } from "../../shared/auth";
+import { getLocalStorageToken } from "../../shared/utils";
 import EditPost from "../edit-post/edit-post";
 import "./post-card.css";
 

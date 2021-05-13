@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
-import { getLocalStorageToken } from "../shared/auth";
+import { getLocalStorageToken } from "../shared/utils";
 import jwt_decode from "jwt-decode";
 
 export const AuthContext = createContext();
