@@ -9,7 +9,7 @@ import { AuthContextProvider } from "./store/auth";
 import { Router } from "@reach/router";
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:3000";
+  axios.defaults.baseURL = "https://suyash-twinbit-assignment.herokuapp.com";
 
   const [redirect, setRedirect] = useState("/enter");
   const [loggedIn, setLoggedIn] = useState(false);
