@@ -1,3 +1,7 @@
+const Post = require("../models/post");
+const bcrypt = require("bcrypt");
+const HttpStatus = require("http-status-codes");
+
 const addPost = async (req, res, next) => {
     const newPost = req.body;
     post = await Post.create({ ...newPost, user: req.user._id });

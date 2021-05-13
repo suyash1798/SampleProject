@@ -4,13 +4,14 @@ import "./signup.css";
 import axios from "axios";
 import { useState } from "react";
 import { emailRegex } from "../../shared/utils";
+import { navigate } from "@reach/router";
 
 function Signup() {
   const [errors, setError] = useState({});
   const [data, setData] = useState({});
 
   const onSignup = async (event) => {
-    //   event.preventDefault();
+      event.preventDefault();
     let error = false;
     for (let key in errors) {
       console.log(errors[key])
@@ -18,10 +19,9 @@ function Signup() {
     }
     console.log(error)
     if (!error) {
-      console.log(data);
       await axios.post("auth/signup", data);
+      navigate('/enter');  
     }
-    event.preventDefault();
   };
 
   const validations = (input, value) => {

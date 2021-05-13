@@ -1,8 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/post");
-const bcrypt = require("bcrypt");
-const HttpStatus = require("http-status-codes");
 const validator = require("express-joi-validation").createValidator({});
 const {
   newPostSchema,

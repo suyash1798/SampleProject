@@ -1,3 +1,8 @@
+const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const HttpStatus = require("http-status-codes");
+const jwt = require("jsonwebtoken");
+
 const signup = async (req, res, next) => {
     const newUser = req.body;
     let user = await User.findOne({ email: req.body.email });
