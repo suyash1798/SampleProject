@@ -1,17 +1,16 @@
 import { Button, Card, Grid, InputLabel, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useContext, useRef } from "react";
-import { useHistory } from "react-router";
 import { addLocalStorageToken } from "../../shared/auth";
 import { AuthContext } from "../../store/auth";
 import "./login.css";
+import { navigate } from "@reach/router"
 
 function Login() {
   
     const emailRef = useRef();
     const passwordRef = useRef();
     const authCtx = useContext(AuthContext)
-    const history = useHistory();
     
     const onLogin = async (event)=>{
         event.preventDefault();
@@ -24,7 +23,7 @@ function Login() {
         console.log(res)
         addLocalStorageToken(res.data.token);
         authCtx.setUserDetails(res.data.user);
-        history.push('post-list')
+        navigate('post-list')
     }
     
     return (

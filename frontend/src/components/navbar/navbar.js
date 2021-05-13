@@ -1,22 +1,22 @@
 import { Button, Grid } from "@material-ui/core";
 import { useContext } from "react";
-import {  useHistory } from "react-router-dom";
 import { removeLocalStorageToken } from "../../shared/auth";
 import { AuthContext } from "../../store/auth";
+import { navigate } from "@reach/router"
 
 function Navbar(props){
     
     const authCtx = useContext(AuthContext);
-    const history = useHistory();
+    // const navigate = useNavigate();
     
     const onRedirect = (path) => {
-        history.push(path)
+      navigate(path)
     }
     
     const onLogout = (path) => {
         removeLocalStorageToken();
         authCtx.setUserDetails(null);
-        history.push(path);
+        navigate(path);
     }
     return (
         <Grid

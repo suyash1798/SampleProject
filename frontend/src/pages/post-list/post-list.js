@@ -1,16 +1,20 @@
 import { Button, Container, Grid } from "@material-ui/core";
+import { Redirect } from "@reach/router";
 import axios from "axios";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import EditPost from "../../components/edit-post/edit-post";
 import PostCard from "../../components/post-card/post-card";
 import { AuthContext } from "../../store/auth";
 import "./post-list.css";
 
-function PostList() {
+function PostList({loggedIn}) {
+  console.log(222)
   const [posts, setPosts] = useState([]);
   const authCtx = useContext(AuthContext);
 
+  
+  
   useEffect(() => {
     const getAllPosts = async () => {
       const response = await axios.get("/post/all-post");
@@ -18,6 +22,9 @@ function PostList() {
     };
     getAllPosts();
   }, []);
+  
+  
+  
 
   function onDeletePost(id) {
     setPosts(posts.filter((post) => post._id !== id));
@@ -28,11 +35,11 @@ function PostList() {
   function toggleDialog(status){
       setOpenDialog(status)
   }
-  console.log(authCtx)
-  if(!authCtx.user){
-    return <Redirect to="/enter" />
-  }
-
+  if(!authCtx.user) {
+    return (<Redirect to='/enter'noThrow />) 
+   }
+   
+  
   return (
     <Fragment>
       <Container className="main-container">

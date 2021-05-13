@@ -1,42 +1,36 @@
 import axios from "axios";
 import "./App.css";
 import Navbar from "./components/navbar/navbar";
-import React, { useContext, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Auth from './pages/auth/auth';
-import PostList from './pages/post-list/post-list';
-import jwt_decode from "jwt-decode";
+import React, { useState } from "react";
+import Auth from "./pages/auth/auth";
+import PostList from "./pages/post-list/post-list";
 import { getLocalStorageToken } from "./shared/auth";
-import { AuthContext } from "./store/auth";
+import { AuthContextProvider } from "./store/auth";
+import { Router } from "@reach/router";
 
 function App() {
-  axios.defaults.baseURL = "https://suyash-twinbit-assignment.herokuapp.com";
-  
-  // useLayoutEffect(()=>{
-    
-  //   console.log
-  // },[authCtx])
-  const [redirect,setRedirect] = useState('/enter')
-  const [loggedIn,setLoggedIn] = useState(false)
-  const authCtx = useContext(AuthContext)
-  if(getLocalStorageToken() && !loggedIn){
-    const {data} = jwt_decode(getLocalStorageToken())
-    console.log(data);
-    authCtx.setUserDetails(data);
-    setRedirect('/post-list');
-    setLoggedIn(true)
+  axios.defaults.baseURL = "http://localhost:3000";
+
+  const [redirect, setRedirect] = useState("/enter");
+  const [loggedIn, setLoggedIn] = useState(false);
+  console.log(getLocalStorageToken());
+  if (getLocalStorageToken() && !loggedIn) {
+    setRedirect("/post-list");
+    setLoggedIn(true);
+  } else if (!getLocalStorageToken() && loggedIn) {
+    setLoggedIn(false);
+    setRedirect("/enter");
   }
-  
+  console.log(111, redirect);
+
   return (
-      <Router>
-        <Navbar />
-        {/* {console.log(authCtx.current.user)} */}
-        <Switch>
-          <Redirect exact from="/" to={redirect} />
-          <Route path="/enter" component={Auth} />
-          <Route path="/post-list" component={PostList} />
-        </Switch>
+    <AuthContextProvider>
+      <Navbar />
+      <Router className="router-component">
+        <Auth path="/enter"/>
+        <PostList path="/post-list"/>
       </Router>
+    </AuthContextProvider>
   );
 }
 

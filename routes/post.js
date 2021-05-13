@@ -38,7 +38,8 @@ router.put(
 );
 
 router.get("/all-post", async (req, res, next) => {
-  const posts = await Post.find();
+  console.log(req.user._id)
+  const posts = await Post.find({user:req.user._id});
   res.send(posts);
 });
 
