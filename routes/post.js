@@ -9,46 +9,28 @@ const {
   paramValidation,
   updatePostValidation,
 } = require("../validations/post");
+const { addPost, updatePost, getPost,getAllPosts } = require("../controllers/post");
 
 /* GET users listing. */
 router.post(
   "/add-post",
   validator.body(newPostSchema),
-  async (req, res, next) => {
-    const newPost = req.body;
-    post = await Post.create({ ...newPost, user: req.user._id });
-    // console.log(req.user);
-    res.send(post);
-  }
+  addPost
 );
 
 router.put(
   "/update-post/:postId",
   validator.params(paramValidation),
   validator.body(updatePostValidation),
-  async (req, res, next) => {
-    const newPost = req.body;
-    const { postId } = req.params;
-    post = await Post.updateOne({ _id: postId }, newPost);
-    post = await Post.findOne({ _id: postId });
-    res.send(post);
-  }
+ updatePost
 );
 
-router.get("/all-post", async (req, res, next) => {
-  console.log(req.user._id);
-  const posts = await Post.find({ user: req.user._id });
-  res.send(posts);
-});
+router.get("/all-post",getAllPosts);
 
 router.delete(
   "/delete-post/:postId",
   validator.params(paramValidation),
-  async (req, res, next) => {
-    const { postId } = req.params;
-    post = await Post.deleteOne({ _id: postId });
-    res.send("Deleted Successfull");
-  }
+  getPost
 );
 
 module.exports = router;
